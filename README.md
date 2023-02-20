@@ -78,7 +78,7 @@ pip install ethereum
     
 6. At top of the dasboard under the "Accounts" Tab, will be a mnemonic string
 
-<img  src="./Images/mnemonic_ex.png"  width="600" />
+<img  src="./app/Images/mnemonic_ex.png"  width="600" />
 
     - copy the string to your clipboard
     
@@ -90,7 +90,7 @@ pip install ethereum
     
     - save the text file as '.env' file
     
-<img  src="./Images/directory.png"  width="200" />
+<img  src="./app/Images/directory.png"  width="200" />
     
     - **this mnemonic will be used in the `lucky_day.py` code to create a wallet with public and private key for you use on the local Ganache testing Blockchain**
     
@@ -100,7 +100,7 @@ pip install ethereum
     - you can choose another address in the list to be your "Seller_Address" 
         -- as described below in step 5.
     
-<img  src="./Images/address.png"  width="600" />  
+<img  src="./app/Images/address.png"  width="600" />  
     
 
 ---
@@ -117,34 +117,34 @@ pip install ethereum
 
 4. Hit the "Transaction Type" button, to register your preferences.
 
-<img  src="./Images/main_page.png"  width="600" /> 
+<img  src="./app/Images/main_page.png"  width="600" /> 
 
 5. Open the "Customize your Transaction" expander and enter the specific information about the vehicle or motorcycle you are buying. 
     - you can go to your Ganache Dashboard and copy one of the addresses listed, (as mentioned above)
     - paste that address in the "Seller's Address" area of the app
     - this way you can test the app and see the transaction on your Ganache Dashboard
     
-<img  src="./Images/data_form_top.png"  width="600" /> 
-<img  src="./Images/data_form_bottom.png"  width="600" /> 
+<img  src="./app/Images/data_form_top.png"  width="600" /> 
+<img  src="./app/Images/data_form_bottom.png"  width="600" /> 
   
 6. Hit the "Review Transaction Details" button on the bottom of the expander
     - the current USD to ETH to wei equivalents are listed
     - the details you entered about the transaction are listed as a transaction record for final review
     
-<img  src="./Images/transaction_review.png"  width="600" /> 
+<img  src="./app/Images/transaction_review.png"  width="600" /> 
     
 7. Hit the "Complete Transaction" button on the bottom of the expander
     -see the transactions hash code printed below the button verifying the hash code added to the block as the transaction was processed
-<img  src="./Images/complete_st_hash.png"  width="600" />  
+<img  src="./app/Images/complete_st_hash.png"  width="600" />  
 
 5. You can verify this transaction by navigating to your Ganache dashboard and clicking on the "Transactions" tab
 
-<!-- <img  src="./Images/transaction.png"  width="600" /> -->
+<!-- <img  src="./app/Images/transaction.png"  width="600" /> -->
 
 6. The amount paid will also be subtracted from your wallet balance, listed next to your wallet address on the "Accounts" page
     - you can also see the transaction price added to the seller's Address that you listed in the app
 
-<!-- <img  src="./Images/my_gan_acct.png"  width="600" />
+<!-- <img  src="./app/Images/my_gan_acct.png"  width="600" />
  -->
 
 
