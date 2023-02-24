@@ -1,8 +1,13 @@
 # lucky_day
 Blockchain Buy/Sell App
 
-This project utilizes Streamlit to prototype a deployable app using blockchain payments for purchases of cars and motorcycles.
-The python code in this project leverages the program Ganache to create a user's/(buyer's) crypto wallet with public and private keys. The buy/sell transaction is identified as a vehicle or motorcycle and the option to include a more complex smart contract, or simply handle the payment transaction on the Ganache testing Blockchain. 
+This project utilizes a Streamlit app to handle private and public blockchain sales transactions. 
+
+Private transactions of vehicle/motorcycle sales can be handled with user input data to complete the sale via a simple blockchain wei transaction or using a smart contract for tokenization of the VIN and tracking of all transactions with that token in addition to the monetary transaction.
+
+A second functionality of the app interface uses a smart contract, using ERC721 standards, to tokenize artwork NFTs and handle the sale/auctioning of those tokens via a public blockchain network. 
+
+The python code in this project leverages the program Ganache to connect the user's(buyer's) crypto wallet to the Streamlit interface. The user can choose a page for which type of transaction they wish to use: buying a vehicle/motorcycle or selling/auctioning their art assets.  
 
 ---
 
