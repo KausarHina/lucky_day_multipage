@@ -425,7 +425,7 @@ def run() :
     ################################################################################
     # Step 5: User Review of transaction details before committing to the Blockchain
 
-    # ******* neet to include code from line 124-129 about contract level == Simple Transaction Record ***
+    # ******* need to include code from line 124-129 about contract level == Simple Transaction Record ***
     if st.session_state.submit2 == True or st.session_state.submit3 == True:       
         
         print(f"st.session_state.submit2={st.session_state.submit2} st.session_state.submit3={st.session_state.submit3}")
@@ -437,7 +437,7 @@ def run() :
         else:
             price = st.session_state.moto_price
             pmtCOIN = st.session_state.moto_pmtCOIN
-
+        
         if price != '' : 
             priceUSD, priceETH, priceWEI = get_price(w3, pmtCOIN, price)
         else:
@@ -445,7 +445,7 @@ def run() :
             priceETH = '' 
             priceWEI = ''   
     
-
+        # Establish wallet has enough eth for transaction, and print sidebar balance if transaction would go through
         print(f"priceETH={priceETH} walletETH={walletETH}")
         if priceETH != '' and float(priceETH) <= float(walletETH):
             new_balance = float(walletETH) - float(priceETH)
@@ -464,8 +464,7 @@ def run() :
                 st.sidebar.write(f":blue[If you buy this {st.session_state.moto_make} {st.session_state.moto_model} for, {priceETH} ETH]")
                 st.sidebar.write(f":blue[your new balance: {new_balance}]")
             
-            #st.session_state.priceETH=priceETH
-
+            #Text propmting user to review transaction details before execution
             st.write(" ")
             st.markdown("### If this sale record looks correct, press the button below")
             st.markdown("### to complete the transaction and record it to the Blockchain")    
@@ -474,7 +473,7 @@ def run() :
             buyer_name_address=f"<p style=\"color:Red;\" > BUYER INFO : {st.session_state.buyer_name} @ {buyer_address} </p>"
             st.markdown( buyer_name_address, unsafe_allow_html=True)
 
-            price_pmtCOIN=f"<p style=\"color:Red;\" > {price} @ {pmtCOIN} </p>"
+            price_pmtCOIN=f"<p style=\"color:Red;\" > {price} @ {pmtCOIN}  =  {priceWEI} @ wei </p>"
             st.markdown( price_pmtCOIN, unsafe_allow_html=True)
 
             to_str=f"<p style=\"color:Red;\" > <b>TO </b> </p>"
@@ -497,6 +496,8 @@ def run() :
                 moto_info="<p style=\"color:Red;\" > for the {st.session_state.moto_year}, {st.session_state.moto_make}, {st.session_state.moto_model} </p>"
                 #st.write(f":red[*for the {st.session_state.moto_year}, {st.session_state.moto_make}, {st.session_state.moto_model}*]")
                 st.markdown( moto_info, unsafe_allow_html=True)                     
+        
+        # else statement if wallet balance from line 450 is less than the sales transaction amount
         else:
             if type == "Vehicle":
                 print(f"veh_make={st.session_state.veh_make}")
