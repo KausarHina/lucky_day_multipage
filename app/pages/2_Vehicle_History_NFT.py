@@ -98,24 +98,24 @@ def vehicle_history_NFT():
     st.markdown("# Vehicle History NFT")
 
     st.write(
-        """Vehicle History NFT"""
+        """Vehicle NFT Section"""
     )
 
     #Load accesscontrols_contract
     accesscontrols_contract = load_accesscontrols_contract()
-    st.write("accesscontrols_contract address", accesscontrols_contract.address)
+    #st.write("accesscontrols_contract address", accesscontrols_contract.address)
 
     #Load vehicle_contract
     vehicle_contract = load_vehicle_contract()
-    st.write("vehicle_contract address", vehicle_contract.address)
+    #st.write("vehicle_contract address", vehicle_contract.address)
 
     #Load mothistory_contract
     mothistory_contract = load_mothistory_contract()
-    st.write("mothistory_contract address", mothistory_contract.address)
+    #st.write("mothistory_contract address", mothistory_contract.address)
 
     #Load service_history_contract
     service_history_contract = load_service_history_contract()
-    st.write("service_history_contract address", service_history_contract.address)
+    #st.write("service_history_contract address", service_history_contract.address)
 
     vehicle_uri = st.text_input("Vehicle URI", max_chars=20)
 
@@ -148,7 +148,7 @@ def vehicle_history_NFT():
     st.write('===========================================================================================')
 
     st.write(
-        """Emission Test NFT"""
+        """Emission Test NFT Section"""
     )
 
     emission_test_result = st.radio("What\'s vehicle emission test result", ('Pass', 'Fail'))
