@@ -11,11 +11,11 @@ import json
 
 def lucky_day_nft_page():
    
-    st.set_page_config(page_title="LuckyDay NFT", page_icon="📈", layout="wide")
-    st.markdown("# LuckyDay NFT")
-    st.sidebar.header("LuckyDay NFT")
+    st.set_page_config(page_title="LuckyDay Auction NFT", page_icon="📈", layout="wide")
+    st.markdown("#LuckyDay Auction NFT")
+    st.sidebar.header("LuckyDay Auction NFT")
     st.write(
-        """LuckyDay NFT"""
+        """LuckyDay Auction NFT"""
     )
 
 lucky_day_nft_page()
