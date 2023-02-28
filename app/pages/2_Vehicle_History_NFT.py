@@ -96,7 +96,7 @@ def vehicle_history_NFT():
    
     st.set_page_config(page_title="Vehicle History NFT", page_icon="📈", layout="wide")
     st.markdown("# Vehicle History NFT")
-    st.sidebar.header("Vehicle History NFT")
+
     st.write(
         """Vehicle History NFT"""
     )
@@ -145,7 +145,39 @@ def vehicle_history_NFT():
         st.write("owner_of = ", stored_owner_of)
    
 
+    st.write('===========================================================================================')
 
+    st.write(
+        """Emission Test NFT"""
+    )
+
+    emission_test_result = st.radio("What\'s vehicle emission test result", ('Pass', 'Fail'))
+
+    pass_result = False
+    if emission_test_result == 'Pass':
+        st.write('Your selected emission test Pass')
+        pass_result = True
+    else:
+        st.write('Your selected emission test Fail')
+
+    mileage = st.number_input('Insert vehicle mileage number')
+
+    emission_test_vehicle_token_id = st.number_input('Insert vehicle Token ID', min_value=1, max_value=100, value=2, step=1)
+
+    mileage_number = int(mileage)
+
+    if st.button("Mint Vehicle Emission Test Token"):
+        emission_test_vehicle_token_uri = vehicle_contract.functions.tokenURI(emission_test_vehicle_token_id).call() 
+        if len(emission_test_vehicle_token_uri) > 0 :
+            #mint mot nft to specific vehicle
+            transaction_hash = mothistory_contract.functions.mint(vehicle_contract.address, 
+                                                                emission_test_vehicle_token_id, 
+                                                                emission_test_vehicle_token_uri,
+                                                                mileage_number,
+                                                                pass_result,
+                                                                "" ).transact({'from': account, 'gas': 1000000})
+            st.write("transaction_hash", transaction_hash)
+        
 
 vehicle_history_NFT()
 
