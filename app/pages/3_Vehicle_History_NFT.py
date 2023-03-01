@@ -6,6 +6,7 @@ import os
 import pathlib
 from bip44 import Wallet
 from eth_account import Account
+import pandas as pd
 
 w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
 
@@ -97,25 +98,78 @@ def vehicle_history_NFT():
     st.set_page_config(page_title="Vehicle History NFT", page_icon="📈", layout="wide")
     st.markdown("# Vehicle History NFT")
 
-    st.write(
-        """Vehicle NFT Section"""
-    )
-
     #Load accesscontrols_contract
     accesscontrols_contract = load_accesscontrols_contract()
+    if accesscontrols_contract is None :
+        return
     #st.write("accesscontrols_contract address", accesscontrols_contract.address)
 
     #Load vehicle_contract
     vehicle_contract = load_vehicle_contract()
+    if vehicle_contract is None :
+        return
+    
     #st.write("vehicle_contract address", vehicle_contract.address)
 
     #Load mothistory_contract
     mothistory_contract = load_mothistory_contract()
+    if mothistory_contract is None :
+        return
     #st.write("mothistory_contract address", mothistory_contract.address)
 
     #Load service_history_contract
     service_history_contract = load_service_history_contract()
+    if service_history_contract is None :
+        return
     #st.write("service_history_contract address", service_history_contract.address)
+
+    st.write("------------------------------------------------------------------------------------------------------")
+    st.write(
+        """Vehicle History Search"""
+    )
+
+    token_id_to_vin_list = []
+    token_id_list = []
+    i = 1
+    token_id_to_vin = search_vehicle_token_id = vehicle_contract.functions.tokenIdToVIN(i).call()
+
+    if len(token_id_to_vin) > 0 :
+        token_id_to_vin_list.append(token_id_to_vin)
+        token_id_list.append(i)
+    
+    while len(token_id_to_vin) > 0:
+        token_id_to_vin = search_vehicle_token_id = vehicle_contract.functions.tokenIdToVIN(i).call()    
+        if len(token_id_to_vin) > 0 :
+            i = i + 1
+            token_id_to_vin_list.append(token_id_to_vin)
+            token_id_list.append(i)
+
+    st.write("Total Vehicle Tokens ", len(token_id_list))
+    search_vehicle_token_id = st.selectbox('Select Vehicle token ID ', token_id_list )
+   
+    st.write("Selected Vehicle Token ID : ", search_vehicle_token_id)
+    selected_token_id_to_vin = vehicle_contract.functions.tokenIdToVIN(search_vehicle_token_id).call()   
+    st.write("VIN Number of Selected Vehicle Token ID : ", selected_token_id_to_vin) 
+        
+    mot_address = mothistory_contract.address
+    total_child_tokens = vehicle_contract.functions.totalChildTokens( search_vehicle_token_id,  mot_address ).call() 
+    
+    children = []
+    for number in range(total_child_tokens):
+        child_token_id = vehicle_contract.functions.childTokenByIndex(search_vehicle_token_id, mot_address, number ).call() 
+        child_info = mothistory_contract.functions.getMOTByTokenId(child_token_id).call()
+        children.append(child_info)
+
+    df = pd.DataFrame(children, columns =['Mileage', 'Date', 'Garage Address', 'Emission Test', 'Advisories'])
+
+    df['Date'] = pd.to_datetime(df['Date'], unit='s')
+    st.write(df)
+
+    #st.write(children)
+    st.write("------------------------------------------------------------------------------------------------------")
+    st.write(
+        """Vehicle NFT Section"""
+    )
 
     vehicle_uri = st.text_input("Vehicle URI", max_chars=20)
 
@@ -145,7 +199,7 @@ def vehicle_history_NFT():
         st.write("owner_of = ", stored_owner_of)
    
 
-    st.write('===========================================================================================')
+    st.write("------------------------------------------------------------------------------------------------------")
 
     st.write(
         """Emission Test NFT Section"""
@@ -160,7 +214,7 @@ def vehicle_history_NFT():
     else:
         st.write('Your selected emission test Fail')
 
-    mileage = st.number_input('Insert vehicle mileage number')
+    mileage = st.number_input('Insert vehicle mileage number', min_value=1000, max_value=100000, value=30000, step=1000)
 
     emission_test_vehicle_token_id = st.number_input('Insert vehicle Token ID', min_value=1, max_value=100, value=2, step=1)
 
