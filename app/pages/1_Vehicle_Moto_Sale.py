@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import streamlit as st
+import pandas as pd
 from PIL import Image
 from pathlib import Path
 from utils import getnums, get_price, send_transaction
@@ -24,7 +25,6 @@ def form2_callback():
     print("form2_callback executed")
     st.session_state['submit2'] = True
 
-    
 def form3_callback():
     print("form3_callback executed")
     st.session_state['submit3'] = True
@@ -80,7 +80,7 @@ def reset_form3_session_state():
     if 'veh_model' not in st.session_state:
         st.session_state.veh_model=''  
 
-def run() :
+def load_Vehicle_Moto_sale() :
     ################################################################################
     # Step 1:
     # Streamlit Code for Header
@@ -100,7 +100,6 @@ def run() :
     ################################################################################
     # Step 2:
     # Get Buyer Wallet data and balance for sidebar
-
     account = generate_account()
     walletETH = get_balance(w3, account.address)
     buyer_address = account.address
@@ -109,18 +108,11 @@ def run() :
     st.sidebar.write("Your (buyer) Account")
     st.sidebar.write(f"Account Address : {buyer_address}")
     st.sidebar.write(f"Balance: {walletETH}")
-#     def wallet()
-#         account = generate_account()
-#         walletETH = get_balance(w3, account.address)
-#         buyer_address = account.address
-#     wallet()
-
-#     st.sidebar.markdown("**It's Your Lucky Day to Buy**")
-#     st.sidebar.write("Your (buyer) Account")
-#     st.sidebar.write(f"Account Address : {buyer_address}")
-#     st.sidebar.write(f"Balance: {walletETH}")
- 
-
+    
+    def get_wallet():
+        walletETH = get_balance(w3, account.address)
+        st.sidebar.write(f":blue[your new account balance: {walletETH}]")
+        
 
     ################################################################################
     # Step 3:
@@ -158,18 +150,29 @@ def run() :
 
     ################################################################################
     # Step 4:
-    # Sets up data customization Form 2, with expander for Vehicle, or Form 3 for Motorcycle selection options
-    
+    # Sets up data customization Form 2, with expander for Vehicle, or Form 3 for Motorcycle 
+
     reset_form2_session_state()
     reset_form3_session_state()
     priceUSD = '' 
     priceETH = '' 
     priceWEI = ''   
+    
+    
+        #connects with Ganache testing addresses to use for seller in this beta version
+        # all_ganach_addresses = w3.eth.accounts
+    # seller_list = []
+    # all_addresses = w3.eth.accounts 
+    # for i in range (1,10):
+    #     next_address = all_addresses[i]
+    #     seller_addresses = seller_list.append(next_address)
+    
+    # seller_addresses = seller_addresses.pop(0)
         
-    #connects with Ganache testing addresses to use for sellers in this beta version
     seller_addresses = w3.eth.accounts
-
-    # Sets up form 2
+    seller_addresses = [seller_addresses[1], seller_addresses[2], seller_addresses[3], seller_addresses[4], seller_addresses[5], seller_addresses[6], seller_addresses[7]]
+        
+    ##### Sets up form 2 #####
     if submit == True and type == "Vehicle":
         form2 = st.form(key="form2_settings", clear_on_submit=False)
         reset_form2_session_state()
@@ -227,7 +230,7 @@ def run() :
         # )
 
         
-
+        
     # ---------
     #col 2 data input- Vehicle
         veh_color_options = ["black", "white", "silver", "grey", "beige", "blue", "red", "green", "gold", "other"]
@@ -244,17 +247,11 @@ def run() :
         col2style.markdown("---")
 
         buyer_name = col2style.text_input(
-            "Buyer Name",
+            "Your (buyer) Name",
             max_chars=40,
             key="buyer_name",
         )
 
-        # col2style.write(buyer_address)
-        # buyer_address = col2style.text_input(
-        #     "Buyer Wallet Address",
-        #     max_chars=42,
-        #     key="buyer_address",
-        # )
         
         
     # ---------    
@@ -294,15 +291,18 @@ def run() :
             key="veh_gas",
         )
         
+        # col3style.write ("Current Avg Gas Price")
+        # avg_gas_price = get_gas_price()
+        # col3style.write (f"{avg_gas_price}")
+        
     # Final Form2 submittal of data to of Transaction Details
-        #submit2 = form2.form_submit_button(label="Review Transaction Details")
         submit_button_form2 = form2.form_submit_button(label='Review Transaction Details', on_click=form2_callback)
         print(f"submit2 = {st.session_state.submit2}")
 
     # ----------------------------
     # ----------------------------
 
-    # Sets up form 3
+    ##### Sets up form 3 ####
     if submit == True and type == "Motorcycle":
         form3 = st.form(key="form3_settings", clear_on_submit=False)
         reset_form3_session_state()
@@ -344,7 +344,7 @@ def run() :
         seller_name = col1style.text_input(
             "Seller Name",
             max_chars=40,
-            key="moto_seller_name",
+            key="seller_name",
         )
 
         # seller addresses from Ganache for beta testing
@@ -383,15 +383,9 @@ def run() :
         buyer_name = col2style.text_input(
             "Buyer Name",
             max_chars=40,
-            key="moto_buyer_name",
+            key="buyer_name",
         )
 
-        # col2style.write(buyer_address)
-        # buyer_address = col2style.text_input(
-        #     "Buyer Wallet Address",
-        #     max_chars=42,
-        #     key="buyer_address",
-        # )
 
         pmtCOIN_options =["USD", "ETH"]
         pmtCOIN = col2style.radio(
@@ -433,16 +427,19 @@ def run() :
             key="moto_gas",
         )
         
+        # col3style.write ("Current Avg Gas Price")
+        # avg_gas_price = get_gas_price()
+        # col3style.write (f"{avg_gas_price}")
 
         # Final Form3 submittal of data to of Transaction Details
-        #submit3 = form3.form_submit_button(label="Review Transaction Details")
         submit_button_form3 = form3.form_submit_button(label='Review Transaction Details', on_click=form3_callback)
         print(f"submit3 = {st.session_state.submit3}")
 
     ################################################################################
     # Step 5: User Review of transaction details before committing to the Blockchain
+                
+    # ******* need to include code from line 124-129 about contract level == Simple Transaction Record *** 
 
-    # ******* need to include code from line 124-129 about contract level == Simple Transaction Record ***
     if st.session_state.submit2 == True or st.session_state.submit3 == True:       
         
         print(f"st.session_state.submit2={st.session_state.submit2} st.session_state.submit3={st.session_state.submit3}")
@@ -454,7 +451,7 @@ def run() :
         else:
             price = st.session_state.moto_price
             pmtCOIN = st.session_state.moto_pmtCOIN
-        
+
         if price != '' : 
             priceUSD, priceETH, priceWEI = get_price(w3, pmtCOIN, price)
         else:
@@ -466,10 +463,13 @@ def run() :
         print(f"priceETH={priceETH} walletETH={walletETH}")
         if priceETH != '' and float(priceETH) <= float(walletETH):
             new_balance = float(walletETH) - float(priceETH)
-            st.write("**The blockchain sale transaction will be in wei**")
-            st.write("current market price of Ethereum")
+            
+            st.markdown("---")
+            st.title("**The blockchain sale transaction will be in wei**")
+            st.write("current market price of Ethereum")                  
             st.write(f"${priceUSD} USD = {priceETH} ETH = {priceWEI} wei")
-
+            st.markdown("---")
+            
             st.session_state.priceETH=priceETH
             st.session_state.seller_wallet_address=st.session_state.seller_address
 
@@ -484,8 +484,10 @@ def run() :
                 st.sidebar.write(f":blue[If you buy this {st.session_state.moto_make} {st.session_state.moto_model} for, {priceETH} ETH]")
                 st.sidebar.write(f":blue[your new balance: {new_balance}]")
             
-            #Text propmting user to review transaction details before execution
+            
+              #Text propmting user to review transaction details before execution
             st.write(" ")
+            st.markdown("---")
             st.markdown("### If this sale record looks correct, press the button below")
             st.markdown("### to complete the transaction and record it to the Blockchain")    
             st.write(" ")
@@ -493,7 +495,7 @@ def run() :
             buyer_name_address=f"<p style=\"color:Red;\" > BUYER INFO : {st.session_state.buyer_name} @ {buyer_address} </p>"
             st.markdown( buyer_name_address, unsafe_allow_html=True)
 
-            price_pmtCOIN=f"<p style=\"color:Red;\" > {price} @ {pmtCOIN}  =  {priceWEI} @ wei </p>"
+            price_pmtCOIN=f"<p style=\"color:Red;\" > {price} @ {pmtCOIN} =  {priceWEI} @ wei </p>"
             st.markdown( price_pmtCOIN, unsafe_allow_html=True)
 
             to_str=f"<p style=\"color:Red;\" > <b>TO </b> </p>"
@@ -513,10 +515,10 @@ def run() :
                 st.markdown( veh_info, unsafe_allow_html=True)
 
             else:
-                moto_info="<p style=\"color:Red;\" > for the {st.session_state.moto_year}, {st.session_state.moto_make}, {st.session_state.moto_model} </p>"
+                moto_info=f"<p style=\"color:Red;\" > for the {st.session_state.moto_year}, {st.session_state.moto_make}, {st.session_state.moto_model} </p>"
                 #st.write(f":red[*for the {st.session_state.moto_year}, {st.session_state.moto_make}, {st.session_state.moto_model}*]")
                 st.markdown( moto_info, unsafe_allow_html=True)                     
-        
+         
         # else statement if wallet balance from line 450 is less than the sales transaction amount
         else:
             if type == "Vehicle":
@@ -524,9 +526,9 @@ def run() :
                 st.write(f"With a balance of {walletETH} ether in your wallet, you can't afford this {st.session_state.veh_make} {st.session_state.veh_model} for, {priceETH} ETH.")
             else:
                 st.write(f"With a balance of {walletETH} ether in your wallet, you can't afford this {st.session_state.moto_make} {st.session_state.moto_model} for, {priceETH} ETH.")
-
-
-    ################################################################################
+    
+    
+  ################################################################################
     # Step 6:
     # Link Smart Contract
     # ******* neet to include code from line 124-129 about contract level == Smart Contract Enabled
@@ -548,15 +550,18 @@ def run() :
         st.write("Here is the hash code confirming your transaction")
         st.write(f"{transaction_complete}")
         st.write("/n")
+        get_wallet()
         if type == "Vehicle":
             st.markdown("## Congratulations on buying your vehicle!")
             st.balloons()
         else:
             st.markdown("## Congratulations on buying your motorcycle!")
             st.balloons()
-
+        
+        
 
     ################################################################################
+##################
     # Step 8:
     # App github link and notes
     st.markdown("---")
@@ -565,7 +570,7 @@ def run() :
         " "
     )
 
-    share_msg=f"<p style=\"color:Green;\"> <b> Share with your friends and make buying and selling your lucky day! </b> </p>"
+    share_msg=f"<p style=\"color:Blue;\"> <b> Share with your friends and make buying and selling your lucky day! </b> </p>"
     st.markdown(share_msg, unsafe_allow_html=True)
 
     st.write(
@@ -575,5 +580,8 @@ def run() :
 
     st.write("More infos and :star: at [github.com/arty-j/lucky_day](https://github.com/arty-j/lucky_day)")
 
-    # st.session_state["previous_style"] = style
     ################################################################################
+
+
+
+load_Vehicle_Moto_sale()
