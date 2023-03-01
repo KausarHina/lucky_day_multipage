@@ -103,6 +103,17 @@ def run() :
     st.sidebar.write("Your (buyer) Account")
     st.sidebar.write(f"Account Address : {buyer_address}")
     st.sidebar.write(f"Balance: {walletETH}")
+#     def wallet()
+#         account = generate_account()
+#         walletETH = get_balance(w3, account.address)
+#         buyer_address = account.address
+#     wallet()
+
+#     st.sidebar.markdown("**It's Your Lucky Day to Buy**")
+#     st.sidebar.write("Your (buyer) Account")
+#     st.sidebar.write(f"Account Address : {buyer_address}")
+#     st.sidebar.write(f"Balance: {walletETH}")
+ 
 
 
     ################################################################################
