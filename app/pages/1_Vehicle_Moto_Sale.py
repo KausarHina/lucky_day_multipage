@@ -78,7 +78,7 @@ def reset_form3_session_state():
     if 'veh_model' not in st.session_state:
         st.session_state.veh_model=''  
 
-def run() :
+def load_Vehicle_Moto_sale() :
     ################################################################################
     # Step 1:
     # Streamlit Code for Header
@@ -556,3 +556,7 @@ def run() :
 
     # st.session_state["previous_style"] = style
     ################################################################################
+
+
+
+load_Vehicle_Moto_sale()
