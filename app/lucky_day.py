@@ -33,7 +33,10 @@ def reset_form2_session_state():
         st.session_state['submit2'] = False   
 
     if 'priceETH' not in st.session_state:
-        st.session_state.priceETH=''     
+        st.session_state.priceETH=''  
+
+    if 'seller_wallet_address' not in st.session_state:
+        st.session_state.seller_wallet_address=''        
 
     if 'seller_address' not in st.session_state:
         st.session_state.seller_address=''    
@@ -56,6 +59,9 @@ def reset_form3_session_state():
 
     if 'priceETH' not in st.session_state:
         st.session_state.priceETH='' 
+    
+    if 'seller_wallet_address' not in st.session_state:
+        st.session_state.seller_wallet_address=''     
 
     if 'seller_address' not in st.session_state:
         st.session_state.seller_address='' 
@@ -452,6 +458,9 @@ def run() :
             st.write(f"${priceUSD} USD = {priceETH} ETH = {priceWEI} wei")
 
             st.session_state.priceETH=priceETH
+            st.session_state.seller_wallet_address=st.session_state.seller_address
+
+            #print(f"st.session_state.seller_address={st.session_state.seller_address}, st.session_state.priceETH={st.session_state.priceETH}")
             
             st.sidebar.write(" ")
             st.sidebar.write(" ")
@@ -510,8 +519,8 @@ def run() :
     st.session_state['submit3'] = False
 
     if st.button("Complete Transaction"):
-        print(f"st.session_state.seller_address={st.session_state.seller_address}, st.session_state.priceETH={st.session_state.priceETH}")
-        transaction_complete = send_transaction(w3, account, st.session_state.seller_address, st.session_state.priceETH)
+        print(f"st.session_state.seller_wallet_address={st.session_state.seller_wallet_address}, st.session_state.priceETH={st.session_state.priceETH}")
+        transaction_complete = send_transaction(w3, account, st.session_state.seller_wallet_address, st.session_state.priceETH)
         st.write("Your transaction on the Ganache Blockchain tester is complete!")
         st.write("Here is the hash code confirming your transaction")
         st.write(f"{transaction_complete}")
