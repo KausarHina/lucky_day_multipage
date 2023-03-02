@@ -206,7 +206,7 @@ def load_emission_test_nft_mint_section(account, accesscontrols_contract, vehicl
 def vehicle_history_NFT():
    
     st.set_page_config(page_title="Vehicle History NFT", page_icon="📈", layout="wide")
-    st.markdown("# Vehicle History Report")
+    st.markdown("# Vehicle History Report on LuckyDay Blockchain")
 
     #Load accesscontrols_contract
     accesscontrols_contract = load_accesscontrols_contract()
