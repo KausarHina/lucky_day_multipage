@@ -1,8 +1,13 @@
 # lucky_day
 Blockchain Buy/Sell App
 
-This project utilizes Streamlit to prototype a deployable app using blockchain payments for purchases of cars and motorcycles.
-The python code in this project leverages the program Ganache to create a user's/(buyer's) crypto wallet with public and private keys. The buy/sell transaction is identified as a vehicle or motorcycle and the option to include a more complex smart contract, or simply handle the payment transaction on the Ganache testing Blockchain. 
+This project utilizes a Streamlit app to handle private and public blockchain sales transactions. 
+
+Private transactions of vehicle/motorcycle sales can be handled with user input data to complete the sale via a simple blockchain wei transaction or using a smart contract for tokenization of the VIN and tracking of all transactions with that token in addition to the monetary transaction.
+
+A second functionality of the app interface uses a smart contract, using ERC721 standards, to tokenize artwork NFTs and handle the sale/auctioning of those tokens via a public blockchain network. 
+
+The python code in this project leverages the program Ganache to connect the user's(buyer's) crypto wallet to the Streamlit interface. The user can choose a page for which type of transaction they wish to use: buying a vehicle/motorcycle or selling/auctioning their art assets.  
 
 ---
 
@@ -32,6 +37,10 @@ from dotenv import load_dotenv
 
 import streamlit as st
 
+from PIL import Image
+
+from pathlib import Path
+
 from bip44 import Wallet
 
 from eth_account import Account
@@ -46,7 +55,7 @@ w3 = Web3(Web3.HTTPProvider('HTTP://127.0.0.1:7545'))
 
 ---
 
-# Install Fintech Finder
+# Install Lucky Day
 1. Open your terminal and start a new dev env
 
 `conda create -n dev python=3.8 anaconda`
@@ -67,7 +76,7 @@ pip install ethereum
 
 4. In the directory of your choice, clone this repository
 
-`git clone https://github.com/Arty-j/lucky_day.git`
+`git clone git@github.com:KausarHina/lucky_day_multipage.git`
 
 5. Download Ganache to local system
     www.https://trufflesuite.com/ganache/
@@ -97,7 +106,7 @@ pip install ethereum
 8. Navigate to your Ganache Dashboard once again
     
     - your wallet and public address will be listed as the first address on the Ganache dashboard
-    - you can choose another address in the list to be your "Seller_Address" 
+    - the another address in the list to be your "Seller_Address" options
         -- as described below in step 5.
     
 <img  src="./app/Images/address.png"  width="600" />  
@@ -109,39 +118,44 @@ pip install ethereum
 
 1. Navigate to your terminal, then to the directory where you cloned the lucky_day repository
 
-    - run `streamlit run lucky_day.py`
+    - run `streamlit run app.py`
     
 2. Navigate to streamlit page running locally in browser window
 
-3. Enter they type of transaction you would like to conduct "Vehicle" or "Motorcycle", and whether or not you would like to have it "Smart Contract Enabled" or "Simple Transaction Record".
+3. In the sidebar menu, select the type of transaction you would like to conduct "Vehicle / Motorcycle" or "Artwork NFT" and 
 
-4. Hit the "Transaction Type" button, to register your preferences.
+4. Follow the form prompts on the streamlit page that appears.
+
+    -**IF "Vehicle/Motorcycle":**
+    1. enter the data appropriate for the sale type, and choose whether you wish to have the transaction remain a 'Simple Blockchain Transaction' where only the wei transaction and the addresses of buyer and seller will be recorded, or if "Smart Contract Enabled" is your preferance, where a token is created for your vin and all sale transaction information is recorded to your vin/token and can be updated and viewed at any time.
+    
+    2. Hit the "Transaction Type" button, to register your preferences.
 
 <img  src="./app/Images/main_page.png"  width="600" /> 
 
-5. Open the "Customize your Transaction" expander and enter the specific information about the vehicle or motorcycle you are buying. 
-    - you can go to your Ganache Dashboard and copy one of the addresses listed, (as mentioned above)
-    - paste that address in the "Seller's Address" area of the app
-    - this way you can test the app and see the transaction on your Ganache Dashboard
+    3. Open the "Customize your Transaction" expander and enter the specific information about the vehicle or motorcycle you are buying. 
+        - you can go to your Ganache Dashboard and copy one of the addresses listed, (as mentioned above)
+        - paste that address in the "Seller's Address" area of the app
+        - this way you can test the app and see the transaction on your Ganache Dashboard
     
 <img  src="./app/Images/data_form_top.png"  width="600" /> 
 <img  src="./app/Images/data_form_bottom.png"  width="600" /> 
   
-6. Hit the "Review Transaction Details" button on the bottom of the expander
-    - the current USD to ETH to wei equivalents are listed
-    - the details you entered about the transaction are listed as a transaction record for final review
+    4. Hit the "Review Transaction Details" button on the bottom of the expander
+        - the current USD to ETH to wei equivalents are listed
+        - the details you entered about the transaction are listed as a transaction record for final review
     
 <img  src="./app/Images/transaction_review.png"  width="600" /> 
     
-7. Hit the "Complete Transaction" button on the bottom of the expander
+    5. Hit the "Complete Transaction" button on the bottom of the expander
     -see the transactions hash code printed below the button verifying the hash code added to the block as the transaction was processed
 <img  src="./app/Images/complete_st_hash.png"  width="600" />  
 
-5. You can verify this transaction by navigating to your Ganache dashboard and clicking on the "Transactions" tab
+    6. You can verify this transaction by navigating to your Ganache dashboard and clicking on the "Transactions" tab
 
 <!-- <img  src="./app/Images/transaction.png"  width="600" /> -->
 
-6. The amount paid will also be subtracted from your wallet balance, listed next to your wallet address on the "Accounts" page
+    7. The amount paid will also be subtracted from your wallet balance, listed next to your wallet address on the "Accounts" page
     - you can also see the transaction price added to the seller's Address that you listed in the app
 
 <!-- <img  src="./app/Images/my_gan_acct.png"  width="600" />
