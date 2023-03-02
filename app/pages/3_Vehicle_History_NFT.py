@@ -10,6 +10,7 @@ import pandas as pd
 
 w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
 
+#########################################################################################################################################
 def load_vehicle_contract():
 
     parent_path = pathlib.Path(__file__).parent.parent.resolve() 
@@ -30,6 +31,7 @@ def load_vehicle_contract():
 
     return vehicle_contract
 
+#########################################################################################################################################
 def load_accesscontrols_contract():
 
     parent_path = pathlib.Path(__file__).parent.parent.resolve() 
@@ -50,6 +52,7 @@ def load_accesscontrols_contract():
 
     return accesscontrols_contract
 
+#########################################################################################################################################
 def load_mothistory_contract():
 
     parent_path = pathlib.Path(__file__).parent.parent.resolve() 
@@ -70,8 +73,7 @@ def load_mothistory_contract():
 
     return mothistory_contract
 
-
-
+#########################################################################################################################################
 def load_service_history_contract():
 
     parent_path = pathlib.Path(__file__).parent.parent.resolve() 
@@ -92,41 +94,11 @@ def load_service_history_contract():
 
     return service_history_contract
 
-
-def vehicle_history_NFT():
-   
-    st.set_page_config(page_title="Vehicle History NFT", page_icon="📈", layout="wide")
-    st.markdown("# Vehicle History NFT")
-
-    #Load accesscontrols_contract
-    accesscontrols_contract = load_accesscontrols_contract()
-    if accesscontrols_contract is None :
-        return
-    #st.write("accesscontrols_contract address", accesscontrols_contract.address)
-
-    #Load vehicle_contract
-    vehicle_contract = load_vehicle_contract()
-    if vehicle_contract is None :
-        return
-    
-    #st.write("vehicle_contract address", vehicle_contract.address)
-
-    #Load mothistory_contract
-    mothistory_contract = load_mothistory_contract()
-    if mothistory_contract is None :
-        return
-    #st.write("mothistory_contract address", mothistory_contract.address)
-
-    #Load service_history_contract
-    service_history_contract = load_service_history_contract()
-    if service_history_contract is None :
-        return
-    #st.write("service_history_contract address", service_history_contract.address)
+#########################################################################################################################################
+def load_vehicle_history_search(accesscontrols_contract, vehicle_contract, mothistory_contract , service_history_contract) :
 
     st.write("------------------------------------------------------------------------------------------------------")
-    st.write(
-        """Vehicle History Search"""
-    )
+    st.markdown("## Vehicle History Search")
 
     token_id_to_vin_list = []
     token_id_list = []
@@ -165,19 +137,17 @@ def vehicle_history_NFT():
     df['Date'] = pd.to_datetime(df['Date'], unit='s')
     st.write(df)
 
-    #st.write(children)
+#########################################################################################################################################
+def load_vehicle_nft_mint_section(account, accesscontrols_contract, vehicle_contract, mothistory_contract , service_history_contract) :
+
     st.write("------------------------------------------------------------------------------------------------------")
-    st.write(
-        """Vehicle NFT Section"""
-    )
+    st.markdown("## Vehicle NFT Mint Section")
 
     vehicle_uri = st.text_input("Vehicle URI", max_chars=20)
 
     vehicle_vin = st.text_input("Vehicle VIN",max_chars=20)
 
     accounts = w3.eth.accounts
-    account = '0x9BfAe49cf5ADBa070c23fF6dED65741817a8D325'
-
     recipient_address = st.selectbox("Select Recipient Address ", options=accounts)
 
     sender_account_info = f"Sender Account Address is {account} "
@@ -197,13 +167,12 @@ def vehicle_history_NFT():
         st.write("vehicle_vin = ", stored_vin)
         st.write("token_uri = ", stored_token_uri)
         st.write("owner_of = ", stored_owner_of)
-   
+
+#########################################################################################################################################   
+def load_emission_test_nft_mint_section(account, accesscontrols_contract, vehicle_contract, mothistory_contract , service_history_contract) :
 
     st.write("------------------------------------------------------------------------------------------------------")
-
-    st.write(
-        """Emission Test NFT Section"""
-    )
+    st.markdown("## Emission Test NFT Mint Section")
 
     emission_test_result = st.radio("What\'s vehicle emission test result", ('Pass', 'Fail'))
 
@@ -232,6 +201,54 @@ def vehicle_history_NFT():
                                                                 "" ).transact({'from': account, 'gas': 1000000})
             st.write("transaction_hash", transaction_hash)
         
+
+#########################################################################################################################################
+def vehicle_history_NFT():
+   
+    st.set_page_config(page_title="Vehicle History NFT", page_icon="📈", layout="wide")
+    st.markdown("# Vehicle History Report")
+
+    #Load accesscontrols_contract
+    accesscontrols_contract = load_accesscontrols_contract()
+    if accesscontrols_contract is None :
+        return
+    #st.write("accesscontrols_contract address", accesscontrols_contract.address)
+
+    #Load vehicle_contract
+    vehicle_contract = load_vehicle_contract()
+    if vehicle_contract is None :
+        return
+    
+    #st.write("vehicle_contract address", vehicle_contract.address)
+
+    #Load mothistory_contract
+    mothistory_contract = load_mothistory_contract()
+    if mothistory_contract is None :
+        return
+    #st.write("mothistory_contract address", mothistory_contract.address)
+
+    #Load service_history_contract
+    service_history_contract = load_service_history_contract()
+    if service_history_contract is None :
+        return
+    #st.write("service_history_contract address", service_history_contract.address)
+
+    #Need to modify to select different account
+    account = '0x9BfAe49cf5ADBa070c23fF6dED65741817a8D325'
+
+    #Load Vehicle history search section
+    load_vehicle_history_search(accesscontrols_contract, vehicle_contract, mothistory_contract , service_history_contract) 
+
+    #Load Vehicle NFT mint section
+    load_vehicle_nft_mint_section(account, accesscontrols_contract, vehicle_contract, mothistory_contract , service_history_contract) 
+
+    #Load Emission Test NFT mint section
+    load_emission_test_nft_mint_section(account, accesscontrols_contract, vehicle_contract, mothistory_contract , service_history_contract) 
+
+    
+#########################################################################################################################################
+#########################################################################################################################################
+
 
 vehicle_history_NFT()
 
