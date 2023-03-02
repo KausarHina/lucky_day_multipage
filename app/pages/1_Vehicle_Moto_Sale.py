@@ -465,7 +465,7 @@ def load_Vehicle_Moto_sale() :
             new_balance = float(walletETH) - float(priceETH)
             
             st.markdown("---")
-            st.title("**The blockchain sale transaction will be in wei**")
+            st.write("**The blockchain sale transaction will be in wei**")
             st.write("current market price of Ethereum")                  
             st.write(f"${priceUSD} USD = {priceETH} ETH = {priceWEI} wei")
             st.markdown("---")

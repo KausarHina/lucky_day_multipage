@@ -1,5 +1,8 @@
 # lucky_day
-Blockchain Buy/Sell App
+
+---
+
+*Blockchain Buy/Sell App*
 
 This project utilizes a Streamlit app to handle private and public blockchain sales transactions. 
 
@@ -93,11 +96,11 @@ pip install ethereum
     
 7. Create a new .env file in your lucky_day cloned directory 
 
-    - open the IDE of your choice and create a new text file
+    - open the IDE of your choice and navigate into the app folder, open `sample.env`
     
     - type `MNEMONIC = "paste your mnemonic string saved on your clipboard from ganache here"`
     
-    - save the text file as '.env' file
+    - resave the file as simply '.env' deleting the word `sample` from the file name
     
 <img  src="./app/Images/directory.png"  width="200" />
     
@@ -106,7 +109,7 @@ pip install ethereum
 8. Navigate to your Ganache Dashboard once again
     
     - your wallet and public address will be listed as the first address on the Ganache dashboard
-    - the another address in the list to be your "Seller_Address" options
+    - the another address in the list will be your "Seller_Address" options
         -- as described below in step 5.
     
 <img  src="./app/Images/address.png"  width="600" />  
@@ -122,44 +125,54 @@ pip install ethereum
     
 2. Navigate to streamlit page running locally in browser window
 
-3. In the sidebar menu, select the type of transaction you would like to conduct "Vehicle / Motorcycle" or "Artwork NFT" and 
-
-4. Follow the form prompts on the streamlit page that appears.
-
-    -**IF "Vehicle/Motorcycle":**
-    1. enter the data appropriate for the sale type, and choose whether you wish to have the transaction remain a 'Simple Blockchain Transaction' where only the wei transaction and the addresses of buyer and seller will be recorded, or if "Smart Contract Enabled" is your preferance, where a token is created for your vin and all sale transaction information is recorded to your vin/token and can be updated and viewed at any time.
+3. In the sidebar menu, select the type of transaction you would like to conduct
+    - "Vehicle Moto Sale"
+    - "Lucky Day Auction NFT"
+    - "Vehicle History Report"
     
-    2. Hit the "Transaction Type" button, to register your preferences.
+<img  src="./app/Images/main_page.png"  width="600" />   
 
-<img  src="./app/Images/main_page.png"  width="600" /> 
+4. You will be directed to your page of choice.
 
-    3. Open the "Customize your Transaction" expander and enter the specific information about the vehicle or motorcycle you are buying. 
-        - you can go to your Ganache Dashboard and copy one of the addresses listed, (as mentioned above)
-        - paste that address in the "Seller's Address" area of the app
-        - this way you can test the app and see the transaction on your Ganache Dashboard
+---
+
+## Vehicle / Motorcycle Sale
+1. Enter the data appropriate for the sale type, and choose whether you wish to have the transaction remain a 'Simple Blockchain Transaction' where only the wei transaction and the addresses of buyer and seller will be recorded, or if "Smart Contract Enabled" is your preferance, where a token is created for your VIN and all sale transaction information is recorded to your vin/token.
+
+2. Hit the "Transaction Type" button, to register your preferences.
+
+<img  src="./app/Images/sale_main_page.png"  width="600" /> 
+
+3. An expandable menu will appear. Click the "Customize Your Transaction" button.
+    
+<img  src="./app/Images/customize_transaction.png"  width="600" />     
+    
+4. Enter the specific information about the vehicle or motorcycle you are buying, the seller name and address, and enter your name, and gas for the transaction.
+
     
 <img  src="./app/Images/data_form_top.png"  width="600" /> 
 <img  src="./app/Images/data_form_bottom.png"  width="600" /> 
-  
-    4. Hit the "Review Transaction Details" button on the bottom of the expander
+
+5. Hit the "Review Transaction Details" button on the bottom of the expander
         - the current USD to ETH to wei equivalents are listed
         - the details you entered about the transaction are listed as a transaction record for final review
     
 <img  src="./app/Images/transaction_review.png"  width="600" /> 
     
-    5. Hit the "Complete Transaction" button on the bottom of the expander
-    -see the transactions hash code printed below the button verifying the hash code added to the block as the transaction was processed
-<img  src="./app/Images/complete_st_hash.png"  width="600" />  
+6. Hit the "Complete Transaction" button on the bottom of the expander
+    -see the transactions hash code printed below the button verifying the hash code added to the block as the transaction was processed. Your new wallet balance will appear on the sidebar.
+<img  src="./app/Images/sale_hash.png"  width="600" />  
 
-    6. You can verify this transaction by navigating to your Ganache dashboard and clicking on the "Transactions" tab
+7. You can verify this transaction by navigating to your Ganache dashboard and clicking on the "Transactions" tab
 
-<!-- <img  src="./app/Images/transaction.png"  width="600" /> -->
+<img  src="./app/Images/ganache_transaction.png"  width="600" />
 
-    7. The amount paid will also be subtracted from your wallet balance, listed next to your wallet address on the "Accounts" page
-    - you can also see the transaction price added to the seller's Address that you listed in the app
+<img  src="./app/Images/transaction_detail.png"  width="600" />
 
-<!-- <img  src="./app/Images/my_gan_acct.png"  width="600" />
- -->
+8. The amount paid will also be subtracted from your wallet balance, listed next to your wallet address on the "Accounts" page
+    - (you can also see the transaction price added to the seller's Address that you listed in the app because for this beta version the seller addresses are in your Ganache test network)
+
+<img  src="./app/Images/my_gan_acct.png"  width="600" />
 
 
 ---
