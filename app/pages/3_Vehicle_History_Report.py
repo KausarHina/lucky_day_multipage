@@ -97,6 +97,30 @@ def load_service_history_contract():
     return service_history_contract
 
 #########################################################################################################################################
+def get_garage_role_accounts(accesscontrols_contract):
+    accounts = w3.eth.accounts
+
+    garage_role_accounts_list = []
+    for account in accounts:
+        isGarageRole = accesscontrols_contract.functions.isGarage(account).call()  
+        if isGarageRole == True:
+            garage_role_accounts_list.append(account)
+
+    return garage_role_accounts_list
+
+#########################################################################################################################################
+def get_admin_role_accounts(accesscontrols_contract):
+    accounts = w3.eth.accounts
+
+    admin_role_accounts_list = []
+    for account in accounts:
+        isAdminRole = accesscontrols_contract.functions.isAdmin(account).call()  
+        if isAdminRole == True:
+            admin_role_accounts_list.append(account)
+
+    return admin_role_accounts_list
+
+#########################################################################################################################################
 def load_vehicle_history_search( vehicle_contract, mothistory_contract , service_history_contract):
 
 
@@ -107,10 +131,6 @@ def load_vehicle_history_search( vehicle_contract, mothistory_contract , service
     token_id_list = []
     i = 1
     token_id_to_vin = search_vehicle_token_id = vehicle_contract.functions.tokenIdToVIN(i).call()
-
-    #if len(token_id_to_vin) > 0 :
-    #    token_id_to_vin_list.append(token_id_to_vin)
-    #    token_id_list.append(i)
     
     while len(token_id_to_vin) > 0:
         token_id_to_vin_list.append(token_id_to_vin)
@@ -127,8 +147,15 @@ def load_vehicle_history_search( vehicle_contract, mothistory_contract , service
     search_vehicle_token_id = st.selectbox('Select Vehicle token ID ', token_id_list )
    
     st.write("Selected Vehicle Token ID : ", search_vehicle_token_id)
+
     selected_token_id_to_vin = vehicle_contract.functions.tokenIdToVIN(search_vehicle_token_id).call()   
     st.write("VIN Number of Selected Vehicle Token ID : ", selected_token_id_to_vin) 
+
+    selected_token_id_URI = vehicle_contract.functions.tokenURI(search_vehicle_token_id).call() 
+    st.write("URI of Selected Vehicle Token ID : ", selected_token_id_URI)
+
+    selected_token_id_owner_of = vehicle_contract.functions.ownerOf(search_vehicle_token_id).call()
+    st.write("Owner of Selected Vehicle Token ID : ", selected_token_id_owner_of) 
         
     mot_address = mothistory_contract.address
     total_child_tokens = vehicle_contract.functions.totalChildTokens( search_vehicle_token_id,  mot_address ).call() 
@@ -164,20 +191,19 @@ def load_vehicle_history_search( vehicle_contract, mothistory_contract , service
 
 #########################################################################################################################################
 
-def load_vehicle_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract) :    
+def load_vehicle_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract, accesscontrols_contract) :    
 
     st.write("------------------------------------------------------------------------------------------------------")
     st.markdown("## Vehicle NFT Mint Section")
 
-    vehicle_uri = st.text_input("Vehicle URI", max_chars=20)
-
     vehicle_vin = st.text_input("Vehicle VIN",max_chars=20)
+
+    vehicle_uri = st.text_input("Vehicle URI", max_chars=20)
 
     #account='0x9BfAe49cf5ADBa070c23fF6dED65741817a8D325' #Admin Role Account - Ganache 1 in Metamask
     #account='0x132B3e85650F489A181194d178559d64a4A24dCb' #Admin Role Account - Ganache 2 in Metamask
 
-    admin_role_accounts = ['0x9BfAe49cf5ADBa070c23fF6dED65741817a8D325',
-                           '0x132B3e85650F489A181194d178559d64a4A24dCb']
+    admin_role_accounts = get_admin_role_accounts(accesscontrols_contract)
     
     account = st.selectbox('Select Admin Role Account to Mint Vehicle Token', admin_role_accounts, key='admin_role_account' )
   
@@ -189,36 +215,36 @@ def load_vehicle_nft_mint_section(vehicle_contract, mothistory_contract , servic
         transaction_hash = vehicle_contract.functions.mint(vehicle_uri, vehicle_vin, owner_address ).transact({'from': account, 'gas': 1000000})
         st.write("TRANSACTION HASH ", transaction_hash)
        
-        stored_token_id = vehicle_contract.functions.vinToTokenId(vehicle_vin).call()
-        stored_owner_of = vehicle_contract.functions.ownerOf(stored_token_id).call()
-        stored_vin = vehicle_contract.functions.tokenIdToVIN(stored_token_id).call() 
-        stored_token_uri = vehicle_contract.functions.tokenURI(stored_token_id).call() 
-   
-        st.write("Successfully Minted Vehicle Token")
-        st.write("Vehicle Token ID = ", stored_token_id)
-        st.write("Vehicle VIN = ", stored_vin)
-        st.write("Vehicle Token uri = ", stored_token_uri)
-        st.write("Vehicle Owner Account Address = ", stored_owner_of)
+        if transaction_hash is not None:
+            stored_token_id = vehicle_contract.functions.vinToTokenId(vehicle_vin).call()
+            stored_owner_of = vehicle_contract.functions.ownerOf(stored_token_id).call()
+            stored_vin = vehicle_contract.functions.tokenIdToVIN(stored_token_id).call() 
+            stored_token_uri = vehicle_contract.functions.tokenURI(stored_token_id).call() 
+    
+            st.write("Successfully Minted Vehicle Token")
+            st.write("Vehicle Token ID = ", stored_token_id)
+            st.write("Vehicle VIN = ", stored_vin)
+            st.write("Vehicle Token uri = ", stored_token_uri)
+            st.write("Vehicle Owner Account Address = ", stored_owner_of)
 
 
 
 #########################################################################################################################################   
-def load_emission_test_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract) :
+def load_emission_test_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract, accesscontrols_contract) :
     st.write("------------------------------------------------------------------------------------------------------")
     st.markdown("## Emission Test NFT Mint Section")
 
-    emission_test_vehicle_token_id = st.number_input('Insert vehicle Token ID', min_value=1, max_value=100, value=2, step=1)
+    emission_test_vehicle_token_id = st.number_input('Vehicle Token ID', min_value=1, max_value=100, value=2, step=1, key='emission_test_vehicle_token_id')
 
-    mileage = st.number_input('Insert vehicle mileage number', min_value=1000, max_value=100000, value=30000, step=1000)
+    mileage = st.number_input('Vehicle Mileage Number', min_value=1000, max_value=100000, value=30000, step=1000, key="vehicle_mileage")
 
     mileage_number = int(mileage)
+
+    garage_role_accounts = get_garage_role_accounts(accesscontrols_contract)
 
     #account='0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C' #Garage Role Account (Account 4 in MetaMask)
     #account="0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283" #Garage Role Account (Account 3 in MetaMask)
     #account="0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf" #Garage Role Account (Account 6 in MetaMask)
-    garage_role_accounts = ['0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C', 
-                            '0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283', 
-                            '0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf']
     
     account = st.selectbox('Select Garage Role Account ', garage_role_accounts, key='emission_test_account' )
 
@@ -245,20 +271,18 @@ def load_emission_test_nft_mint_section(vehicle_contract, mothistory_contract , 
             st.write("TRANSACTION HASH ", transaction_hash)
 
 #########################################################################################################################################        
-def load_service_history_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract) :   
+def load_service_history_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract, accesscontrols_contract) :   
     st.write("------------------------------------------------------------------------------------------------------")
     st.markdown("## Service History NFT Mint Section")
 
-    service_history_vehicle_token_id = st.number_input('Vehicle Token ID', min_value=1, max_value=100, value=2, step=1, key="vehicle_token_id")
-    mileage = st.number_input('Insert vehicle mileage number', min_value=1000, max_value=100000, value=30000, step=1000, key="vehicle_mileage")
+    service_history_vehicle_token_id = st.number_input('Vehicle Token ID', min_value=1, max_value=100, value=2, step=1, key="service_history_vehicle_token_id")
+    mileage = st.number_input('Vehicle Mileage Number', min_value=1000, max_value=100000, value=30000, step=1000, key="mileage")
 
     #account='0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C' #Garage Role Account (Account 4 in MetaMask)
     #account="0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283" #Garage Role Account (Account 3 in MetaMask)
     #account="0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf" #Garage Role Account (Account 6 in MetaMask)
 
-    garage_role_accounts = ['0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C', 
-                            '0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283', 
-                            '0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf']
+    garage_role_accounts = get_garage_role_accounts(accesscontrols_contract)
     
     account = st.selectbox('Select Garage Role Account ', garage_role_accounts, key='service_history_account' )
 
@@ -312,13 +336,13 @@ def vehicle_history_NFT():
     load_vehicle_history_search(vehicle_contract, mothistory_contract , service_history_contract) 
 
     #Load Vehicle NFT mint section
-    load_vehicle_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract) 
+    load_vehicle_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract, accesscontrols_contract) 
 
     #Load Emission Test NFT mint section
-    load_emission_test_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract) 
+    load_emission_test_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract, accesscontrols_contract) 
 
     #Load Service History NFT mint section
-    load_service_history_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract) 
+    load_service_history_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract, accesscontrols_contract) 
 
     
 #########################################################################################################################################
