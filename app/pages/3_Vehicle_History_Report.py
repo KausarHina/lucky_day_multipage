@@ -202,6 +202,21 @@ def load_emission_test_nft_mint_section(vehicle_contract, mothistory_contract , 
     st.write("------------------------------------------------------------------------------------------------------")
     st.markdown("## Emission Test NFT Mint Section")
 
+    emission_test_vehicle_token_id = st.number_input('Insert vehicle Token ID', min_value=1, max_value=100, value=2, step=1)
+
+    mileage = st.number_input('Insert vehicle mileage number', min_value=1000, max_value=100000, value=30000, step=1000)
+
+    mileage_number = int(mileage)
+
+    #account='0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C' #Garage Role Account (Account 4 in MetaMask)
+    #account="0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283" #Garage Role Account (Account 3 in MetaMask)
+    #account="0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf" #Garage Role Account (Account 6 in MetaMask)
+    garage_role_accounts = ['0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C', 
+                            '0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283', 
+                            '0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf']
+    
+    account = st.selectbox('Select Garage Role Account ', garage_role_accounts, key='emission_test_account' )
+
     emission_test_result = st.radio("What\'s vehicle emission test result", ('Pass', 'Fail'))
 
     pass_result = False
@@ -211,22 +226,7 @@ def load_emission_test_nft_mint_section(vehicle_contract, mothistory_contract , 
     else:
         st.write('Your selected emission test Fail')
 
-    mileage = st.number_input('Insert vehicle mileage number', min_value=1000, max_value=100000, value=30000, step=1000)
-
-    emission_test_vehicle_token_id = st.number_input('Insert vehicle Token ID', min_value=1, max_value=100, value=2, step=1)
-
-    mileage_number = int(mileage)
-
-    #account='0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C' #Garage Role Account (Account 4 in MetaMask)
-    #account="0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283" #Garage Role Account (Account 3 in MetaMask)
-    #account="0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf" #Garage Role Account (Account 6 in MetaMask)
-
-    garage_role_accounts = ['0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C', 
-                            '0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283', 
-                            '0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf']
-    
-    account = st.selectbox('Select Garage Role Account ', garage_role_accounts, key='emission_test_account' )
-
+ 
     if st.button("Mint Vehicle Emission Test Token"):
         emission_test_vehicle_token_uri = vehicle_contract.functions.tokenURI(emission_test_vehicle_token_id).call() 
         if len(emission_test_vehicle_token_uri) > 0 :
@@ -247,10 +247,6 @@ def load_service_history_nft_mint_section(vehicle_contract, mothistory_contract 
     service_history_vehicle_token_id = st.number_input('Vehicle Token ID', min_value=1, max_value=100, value=2, step=1, key="vehicle_token_id")
     mileage = st.number_input('Insert vehicle mileage number', min_value=1000, max_value=100000, value=30000, step=1000, key="vehicle_mileage")
 
-    description = st.text_input("Service Description", max_chars=20)
-
-    mileage_number = int(mileage)
-
     #account='0xd56e60C1E9B5a69CcfF498a8a9Fd8973211d298C' #Garage Role Account (Account 4 in MetaMask)
     #account="0x4de50C3ebec5a00Bd3d212527c7069fED61Ed283" #Garage Role Account (Account 3 in MetaMask)
     #account="0x3C2dD9F4860C71eD3Eab02B3379f57CB824DEaaf" #Garage Role Account (Account 6 in MetaMask)
@@ -261,6 +257,9 @@ def load_service_history_nft_mint_section(vehicle_contract, mothistory_contract 
     
     account = st.selectbox('Select Garage Role Account ', garage_role_accounts, key='service_history_account' )
 
+    description = st.text_input("Service Description", max_chars=20)
+
+    mileage_number = int(mileage)
 
     if st.button("Mint Service History Token", key="mint_service_history_btn"):
         service_history_vehicle_token_uri = vehicle_contract.functions.tokenURI(service_history_vehicle_token_id).call() 
