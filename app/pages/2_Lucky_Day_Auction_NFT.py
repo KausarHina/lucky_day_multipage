@@ -114,6 +114,26 @@ def send_transaction_v1(w3, account, seller_address, priceETH):
     # Send the signed transactions
     return w3.eth.sendRawTransaction(signed_tx.rawTransaction)
 
+def generate_account(address_index = 0):
+    """Create a digital wallet and Ethereum account from a mnemonic seed phrase."""
+    
+    # Fetch mnemonic from environment variable.
+    mnemonic = os.getenv("MNEMONIC")
+    if type(mnemonic) == str:
+
+        # Create Wallet Object
+        wallet = Wallet(mnemonic)
+
+        # Derive Ethereum Private Key
+        private, public = wallet.derive_account("eth",address_index = int(address_index))
+
+        # Convert private key into an Ethereum account
+        account = Account.privateKeyToAccount(private)
+    # Extra procedure to make sure the private key matches hashed private key
+    if account.privateKey == private:
+        return account
+
+
 def load_lucky_day_auction_NFT():
 
     ## Configure streamlit page
@@ -154,20 +174,9 @@ def load_lucky_day_auction_NFT():
 
     st.sidebar.markdown("## Client Account Address and Ethernet Balance in Ether")
 
-    #accounts = w3.eth.accounts
-
-    #print(f"accounts={accounts}")
-    #address = st.sidebar.selectbox("Select Account", options=accounts)
-    mnemonic = os.getenv("MNEMONIC")
-
-    # Create Wallet Object
-    wallet = Wallet(mnemonic)
-
-    # Derive Ethereum Private Key
-    private, public = wallet.derive_account("eth")
-
-    # Convert private key into an Ethereum account
-    account = Account.privateKeyToAccount(private)
+    address_index = [i for i in range(0,10)]
+    address_index = st.sidebar.selectbox('Select Address from your Wallet', address_index)
+    account = generate_account(address_index)
 
     # wei_balance
     wei_balance = w3.eth.get_balance(account.address)
@@ -246,7 +255,7 @@ def load_lucky_day_auction_NFT():
         # Your `account`, the `art_address`, and the `purchase_price` as parameters
         # Save the returned transaction hash as a variable named `transaction_hash`
 
-        print(f"art_address={art_address} purchase_price={purchase_price}")
+        #print(f"art_address={art_address} purchase_price={purchase_price}")
         transaction_hash = send_transaction_v1(w3, account, art_address, purchase_price)
 
         # Markdown for the transaction hash
