@@ -173,16 +173,21 @@ def load_vehicle_nft_mint_section(vehicle_contract, mothistory_contract , servic
 
     vehicle_vin = st.text_input("Vehicle VIN",max_chars=20)
 
+    #account='0x9BfAe49cf5ADBa070c23fF6dED65741817a8D325' #Admin Role Account - Ganache 1 in Metamask
+    #account='0x132B3e85650F489A181194d178559d64a4A24dCb' #Admin Role Account - Ganache 2 in Metamask
+
+    admin_role_accounts = ['0x9BfAe49cf5ADBa070c23fF6dED65741817a8D325',
+                           '0x132B3e85650F489A181194d178559d64a4A24dCb']
+    
+    account = st.selectbox('Select Admin Role Account to Mint Vehicle Token', admin_role_accounts, key='admin_role_account' )
+  
     accounts = w3.eth.accounts
-    recipient_address = st.selectbox("Select Recipient Address ", options=accounts)
+    owner_address = st.selectbox("Select New Vehicle Owner Address ", options=accounts)
 
-    account='0x9BfAe49cf5ADBa070c23fF6dED65741817a8D325' #Admin Role Account - Ganache 1 in Metamask
-    sender_account_info = f"Sender Account Address is {account} "
-    st.write(sender_account_info)
-
+   
     if st.button("Mint Vehicle token"):
-        transaction_hash = vehicle_contract.functions.mint(vehicle_uri, vehicle_vin, recipient_address ).transact({'from': account, 'gas': 1000000})
-        st.write("transaction_hash", transaction_hash)
+        transaction_hash = vehicle_contract.functions.mint(vehicle_uri, vehicle_vin, owner_address ).transact({'from': account, 'gas': 1000000})
+        st.write("TRANSACTION HASH ", transaction_hash)
        
         stored_token_id = vehicle_contract.functions.vinToTokenId(vehicle_vin).call()
         stored_owner_of = vehicle_contract.functions.ownerOf(stored_token_id).call()
@@ -190,10 +195,10 @@ def load_vehicle_nft_mint_section(vehicle_contract, mothistory_contract , servic
         stored_token_uri = vehicle_contract.functions.tokenURI(stored_token_id).call() 
    
         st.write("Successfully Minted Vehicle Token")
-        st.write("token_id = ", stored_token_id)
-        st.write("vehicle_vin = ", stored_vin)
-        st.write("token_uri = ", stored_token_uri)
-        st.write("owner_of = ", stored_owner_of)
+        st.write("Vehicle Token ID = ", stored_token_id)
+        st.write("Vehicle VIN = ", stored_vin)
+        st.write("Vehicle Token uri = ", stored_token_uri)
+        st.write("Vehicle Owner Account Address = ", stored_owner_of)
 
 
 
@@ -237,7 +242,7 @@ def load_emission_test_nft_mint_section(vehicle_contract, mothistory_contract , 
                                                                 mileage_number,
                                                                 pass_result,
                                                                 "" ).transact({'from': account, 'gas': 1000000})
-            st.write("transaction_hash", transaction_hash)
+            st.write("TRANSACTION HASH ", transaction_hash)
 
 #########################################################################################################################################        
 def load_service_history_nft_mint_section(vehicle_contract, mothistory_contract , service_history_contract) :   
@@ -270,7 +275,7 @@ def load_service_history_nft_mint_section(vehicle_contract, mothistory_contract 
                                                                 service_history_vehicle_token_uri,
                                                                 mileage_number,
                                                                 description).transact({'from': account, 'gas': 1000000})
-            st.write("transaction_hash", transaction_hash)
+            st.write("TRANSACTION HASH ", transaction_hash)
 
 #########################################################################################################################################
 def vehicle_history_NFT():
