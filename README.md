@@ -133,7 +133,7 @@ https://trufflesuite.com/ganache/
     - "Lucky Day Auction NFT"
     - "Vehicle History Report"
     
-    <img  src="./app/Images/main_page.png"  width="600" />   
+    <img  src="./app/Images/LuckyDayMainPage.png"  width="600" />   
 
 4. You will be directed to your page of choice.
 
