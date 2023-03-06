@@ -180,7 +180,11 @@ https://trufflesuite.com/ganache/
 
 ## Vehicle History Report 
 
-1. Follow the 'Vehicle History Report User Guide' for detailed steps 
+1. Follow the 'VehicleHistoryReport_SmartContracts_Setup.pdf' for detailed setting up steps
+
+    ![Vehicle History Report Smart Contracts Setup ](./VehicleHistoryReport_SmartContracts_Setup.pdf)
+
+2. Follow the 'VehicleHistoryReport_UserGuide.pdf' for detailed user guide steps
 
     ![Vehicle History Report UserGuide ](./VehicleHistoryReport_UserGuide.pdf)
 ---
