@@ -20,6 +20,23 @@ from web3 import Web3
 
 w3 = Web3(Web3.HTTPProvider('HTTP://127.0.0.1:7545'))
 
+def load_contract(json_path, envpara):
+    
+    # Load Art Gallery ABI
+    #with open(Path('./contracts/compiled/certificate_abi.json')) as f:
+    with open(json_path) as f:
+        certificate_abi = json.load(f)
+
+    # Set the contract address (this is the address of the deployed contract)
+    contract_address = os.getenv(envpara)
+
+    # Get the contract
+    contract = w3.eth.contract(
+        address=contract_address,
+        abi=certificate_abi
+    )
+    # Return the contract from the function
+    return contract
 
 def form2_callback():
     print("form2_callback executed")
@@ -171,7 +188,10 @@ def load_Vehicle_Moto_sale() :
         
     seller_addresses = w3.eth.accounts
     seller_addresses = [seller_addresses[1], seller_addresses[2], seller_addresses[3], seller_addresses[4], seller_addresses[5], seller_addresses[6], seller_addresses[7]]
-        
+    veh_vin = ""
+    veh_make = ""
+    veh_model = ""
+    veh_year = 0
     ##### Sets up form 2 #####
     if submit == True and type == "Vehicle":
         form2 = st.form(key="form2_settings", clear_on_submit=False)
@@ -301,7 +321,7 @@ def load_Vehicle_Moto_sale() :
 
     # ----------------------------
     # ----------------------------
-
+    seller_address = ""
     ##### Sets up form 3 ####
     if submit == True and type == "Motorcycle":
         form3 = st.form(key="form3_settings", clear_on_submit=False)
@@ -532,8 +552,24 @@ def load_Vehicle_Moto_sale() :
     # Step 6:
     # Link Smart Contract
     # ******* neet to include code from line 124-129 about contract level == Smart Contract Enabled
-    # if (st.session_state.submit2 == True or st.session_state.submit3 == True) and contract_level == Smart Contract Enabled:
-
+    if (st.session_state.submit2 == True or st.session_state.submit3 == True) and level == "Smart Contract Enabled":
+        parent_path = pathlib.Path(__file__).parent.parent.resolve() 
+        compiled_contract_path = os.path.join(parent_path, "contracts/compiled/vehicle_buysell.json")
+        contract = load_contract(compiled_contract_path, "SMART_CONTRACT_VEHICLE")
+        print("vin:",veh_vin)
+        tx_hash = contract.functions.registerVehicle(
+                    buyer_address, 
+                    veh_vin,
+                    veh_make,
+                    veh_model,
+                    veh_year, #veh_color
+                    10000,
+                    pmtCOIN,
+                    int(price)
+                ).transact({'from':buyer_address, 'value': w3.toWei(int(price), "ether"), 'gas':1000000})
+        receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+        st.write("Transaction Receipt Mined:")
+        st.write(dict(receipt))
 
     ###############################################################################
     # Step 7:
