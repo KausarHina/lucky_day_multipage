@@ -301,6 +301,8 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
 # Limitations
 1. Solidity Smart Contract for NFT Auction created, but will not compile without errors. See code here
 ![Artifacts_AuctionContract](./Artifacts/Auction.sol)
+![Artifacts_AuctionJsonFile](./Artifacts/auction.json)
+
 
 ---
 
