@@ -151,7 +151,7 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
     
     <img  src="./app/Images/directory.png"  width="200" />
     
-    - **this mnemonic will be used in the `lucky_day.py` code to create a wallet with public and private key for you use on the local Ganache testing Blockchain**
+    - **this mnemonic will be used to create a wallet with public and private key for you use on the local Ganache testing Blockchain**
     
     -
     
@@ -202,16 +202,11 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
     - You can repeat this process for as many accounts as you would like to have for your test network, and rename them as you like
     
 
-### Step 4 - Deploy Smart Contracts
-1. Navigate to Remix browser window, click "Open File" 
-    1. Open all contracts from cloned repo - lucky_day_multipage/app/contracts/
+### Step 4 - Deploy Smart Contract for Vehicle/ Moto Sale
+
+```
     
-    <img  src="./app/Images/remix_dashboard.png"  width="600" />
-    
-    - Compile each file in the following order, make sure they are without errors
-        -- IERC998ERC721TopDownEnumerable.sol, IERC998ERC721TopDown.sol, AccessControls.sol, Vehicle.sol
-        
-    - Deploy Vehicle.sol
+```
     
     
 ### Step 5 - Link to Set-up & User Guide - NFT Auction
@@ -257,10 +252,9 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
 ## Vehicle / Motorcycle Sale
     
 *Note*
-*- your wallet and public address will be listed as the first address on the Ganache dashboard*
+    *your wallet and public address will be listed as the first address on the Ganache dashboard*
     *as described below in step 4*
-    
-   <img  src="./app/Images/address.png"  width="600" />  
+    <img  src="./app/Images/address.png"  width="600" />  
    
 
 1. Enter the data appropriate for the sale type, and choose whether you wish to have the transaction remain a 'Simple       Blockchain Transaction' where only the wei transaction and the addresses of buyer and seller will be recorded, or if "Smart Contract Enabled" is your preferance, where a token is created for your VIN and all sale transaction information is recorded to your vin/token.
