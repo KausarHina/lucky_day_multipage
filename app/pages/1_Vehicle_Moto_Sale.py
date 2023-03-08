@@ -614,7 +614,7 @@ def load_Vehicle_Moto_sale() :
     )
     st.markdown("If you liked this app give us a :thumbsup: it keeps us creating more great tools for the future of Blockchain!")
 
-    st.write("More infos and :star: at [github.com/arty-j/lucky_day](https://github.com/arty-j/lucky_day)")
+    st.write("More infos and :star: at [github.com/KausarHina/lucky_day_multipage](https://github.com/KausarHina/lucky_day_multipage)")
 
     ################################################################################
 
