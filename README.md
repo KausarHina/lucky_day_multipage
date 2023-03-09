@@ -335,7 +335,7 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
 ![Artifacts_AuctionJsonFile](./Artifacts/auction.json)
 
 2. Streamlit cache limit. Everytime after the click button event streamlit cache would be clear that can't prevent the data.
-www.https://discuss.streamlit.io/t/how-to-prevent-the-reloading-of-the-whole-page-when-i-let-the-user-to-perform-an-action/10800
+[Streamlit discuss](https://discuss.streamlit.io/t/how-to-prevent-the-reloading-of-the-whole-page-when-i-let-the-user-to-perform-an-action/10800)
 
 ---
 
