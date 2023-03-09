@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 load_dotenv()
 import streamlit as st
 import pandas as pd
+import pathlib
+import json
 from PIL import Image
 from pathlib import Path
 from utils import getnums, get_price, send_transaction
@@ -192,6 +194,10 @@ def load_Vehicle_Moto_sale() :
     veh_make = ""
     veh_model = ""
     veh_year = 0
+    seller_name = ""
+    buyer_name = ""
+    veh_color = ""
+    veh_title = ""
     ##### Sets up form 2 #####
     if submit == True and type == "Vehicle":
         form2 = st.form(key="form2_settings", clear_on_submit=False)
@@ -552,24 +558,51 @@ def load_Vehicle_Moto_sale() :
     # Step 6:
     # Link Smart Contract
     # ******* neet to include code from line 124-129 about contract level == Smart Contract Enabled
-    if (st.session_state.submit2 == True or st.session_state.submit3 == True) and level == "Smart Contract Enabled":
+    if level == "Smart Contract Enabled":
         parent_path = pathlib.Path(__file__).parent.parent.resolve() 
-        compiled_contract_path = os.path.join(parent_path, "contracts/compiled/vehicle_buysell.json")
-        contract = load_contract(compiled_contract_path, "SMART_CONTRACT_VEHICLE")
-        print("vin:",veh_vin)
-        tx_hash = contract.functions.registerVehicle(
-                    buyer_address, 
-                    veh_vin,
-                    veh_make,
-                    veh_model,
-                    veh_year, #veh_color
-                    10000,
-                    pmtCOIN,
-                    int(price)
-                ).transact({'from':buyer_address, 'value': w3.toWei(int(price), "ether"), 'gas':1000000})
-        receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-        st.write("Transaction Receipt Mined:")
-        st.write(dict(receipt))
+        if st.session_state.submit2 == True:
+            # load file 
+            compiled_contract_path = os.path.join(parent_path, "contracts/compiled/vehicle_buysell.json")
+            contract = load_contract(compiled_contract_path, "SMART_CONTRACT_VEHICLE")
+            # reset price
+            priceUSD, priceETH, priceWEI = get_price(w3, pmtCOIN, price)
+            # build hash
+            tx_hash = contract.functions.registerVehicle(
+                        buyer_address, 
+                        st.session_state.veh_vin,
+                        st.session_state.veh_make,
+                        st.session_state.veh_model,
+                        st.session_state.veh_year, 
+                        st.session_state.veh_color,
+                        st.session_state.veh_title,
+                        st.session_state.seller_name,
+                        st.session_state.buyer_name,
+                        st.session_state.veh_pmtCOIN,
+                        int(price)
+                    ).transact({'from':buyer_address, 'value': w3.toWei(priceETH, "ether"), 'gas':1000000})
+            receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+            st.write("Transaction Receipt Mined:")
+            st.write(dict(receipt))
+        elif st.session_state.submit3 == True:
+            compiled_contract_path = os.path.join(parent_path, "contracts/compiled/moto_buysell.json")
+            contract = load_contract(compiled_contract_path, "SMART_CONTRACT_MOTO")
+            priceUSD, priceETH, priceWEI = get_price(w3, pmtCOIN, price)
+            tx_hash = contract.functions.registerMoto(
+                        buyer_address, 
+                        st.session_state.moto_vin,
+                        st.session_state.moto_make,
+                        st.session_state.moto_model,
+                        st.session_state.moto_year, 
+                        st.session_state.moto_color,
+                        st.session_state.moto_title,
+                        st.session_state.seller_name,
+                        st.session_state.buyer_name,
+                        st.session_state.moto_pmtCOIN,
+                        int(price)
+                    ).transact({'from':buyer_address, 'value': w3.toWei(priceETH, "ether"), 'gas':1000000})
+            receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+            st.write("Transaction Receipt Mined:")
+            st.write(dict(receipt))
 
     ###############################################################################
     # Step 7:
@@ -581,11 +614,13 @@ def load_Vehicle_Moto_sale() :
 
     if st.button("Complete Transaction"):
         print(f"st.session_state.seller_wallet_address={st.session_state.seller_wallet_address}, st.session_state.priceETH={st.session_state.priceETH}")
-        transaction_complete = send_transaction(w3, account, st.session_state.seller_wallet_address, st.session_state.priceETH)
+        if level != "Smart Contract Enabled":
+            transaction_complete = send_transaction(w3, account, st.session_state.seller_wallet_address, st.session_state.priceETH)
         st.write("Your transaction on the Ganache Blockchain tester is complete!")
-        st.write("Here is the hash code confirming your transaction")
-        st.write(f"{transaction_complete}")
-        st.write("/n")
+        if level != "Smart Contract Enabled":
+            st.write("Here is the hash code confirming your transaction")
+            st.write(f"{transaction_complete}")
+            st.write("/n")
         get_wallet()
         if type == "Vehicle":
             st.markdown("## Congratulations on buying your vehicle!")
