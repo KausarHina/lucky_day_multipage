@@ -204,9 +204,15 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
 
 ### Step 4 - Deploy Smart Contract for Vehicle/ Moto Sale
 
-```
-    
-```
+1. Connect Remix to Ganache. (Two ways)
+    - Follow Step 3 using Metamask anccount to Ganache.
+    - Direct connect Ganache to Remix.
+        1. In Remix "Deploy & run transactions" page, change the enviroment to "Dev - Ganache Provider"
+            <img  src="./app/Images/GanacheRemixDirectStep1.png"  width="600" />
+
+        2. After choose the Ganache enviroment, Remix will ask the RPC Server
+            <img  src="./app/Images/GanacheRemixDirectStep1.png"  width="600" />
+            <img  src="./app/Images/GanacheRemixDirectStep2-1.png"  width="600" />  
     
     
 ### Step 5 - Link to Set-up & User Guide - NFT Auction
@@ -304,6 +310,8 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
 
 ![Artifacts_AuctionJsonFile](./Artifacts/auction.json)
 
+2. Streamlit cache limit. Everytime after the click button event streamlit cache would be clear that can't prevent the data.
+www.https://discuss.streamlit.io/t/how-to-prevent-the-reloading-of-the-whole-page-when-i-let-the-user-to-perform-an-action/10800
 
 ---
 
