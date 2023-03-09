@@ -139,6 +139,7 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
     MOTHISTORY_SMART_CONTRACT_ADDRESS=''
     SERVICE_HISTORY_SMART_CONTRACT_ADDRESS=''
     SMART_CONTRACT_VEHICLE = ''
+    SMART_CONTRACT_MOTO=''
     WEB3_PROVIDER_URI='HTTP://127.0.0.1:7545'
     PINATA_API_KEY=''
     PINATA_SECRET_API_KEY=''
@@ -234,8 +235,9 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
 
     2. Click the copy button to copy contract address.
         <img  src="./app/Images/RemixContractAddressCopy.png"  width="600" />
-        
+
 5. Paste the address to SMART_CONTRACT_VEHICLE in .env file 
+6. Do the same thing on MotoBuysell contract.
 
 ### Step 5 - Link to Set-up & User Guide - NFT Auction
 1. Follow the 'LD_README.pdf' for detailed set-up steps and User Guide
