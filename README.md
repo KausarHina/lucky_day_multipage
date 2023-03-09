@@ -204,17 +204,36 @@ Step 6 - Follow links to Set-up and User Guide for **Vehicle History Records**
 
 ### Step 4 - Deploy Smart Contract for Vehicle/ Moto Sale
 
-1. Connect Remix to Ganache. (Two ways)
+1. Open the Remix workspace and import .sol to Remix.
+    - Click the upload botton to load the file into current workspace.
+        <img  src="./app/Images/ImportSol2Remix.png"  width="600" />
+
+2. Complie the solidity file.
+    - 1. Choose the veriosn 0.5.17 of compiler.
+    - 2. Click "compile button"
+    - Remeber contract should be the one import.
+        <img  src="./app/Images/RemixCompiler.png"  width="600" />
+
+3. Connect Remix to Ganache. (Two ways)
     - Follow Step 3 using Metamask anccount to Ganache.
     - Direct connect Ganache to Remix.
         1. In Remix "Deploy & run transactions" page, change the enviroment to "Dev - Ganache Provider"
             <img  src="./app/Images/GanacheRemixDirectStep1.png"  width="600" />
 
         2. After choose the Ganache enviroment, Remix will ask the RPC Server
-            <img  src="./app/Images/GanacheRemixDirectStep1.png"  width="600" />
-            <img  src="./app/Images/GanacheRemixDirectStep2-1.png"  width="600" />  
-    
-    
+            <img  src="./app/Images/RPC_Server.png"  width="600" />  
+            <img  src="./app/Images/GanacheRemixDirectStep2-1.png"  width="600" /> 
+
+        3. Remix would list all the address in Ganache.
+            <img  src="./app/Images/GanacheRemixDirectStep3.png"  width="600" />
+
+4. Copy the contract address.
+    1. Click the Deploy button. 
+        <img  src="./app/Images/RemixDeploy.png"  width="600" />
+
+    2. Click the copy button to copy contract address.
+        <img  src="./app/Images/RemixContractAddressCopy.png"  width="600" />
+
 ### Step 5 - Link to Set-up & User Guide - NFT Auction
 1. Follow the 'LD_README.pdf' for detailed set-up steps and User Guide
 
