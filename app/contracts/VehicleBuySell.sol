@@ -10,11 +10,18 @@ contract VehicleBuySell is ERC721Full{
         string make;
         string model;
         uint year;
-        uint mileage;
+        string veh_color;
+        string veh_title;
+    }
+    struct participant{
+        string seller_name;
+        string buyer_name;
         string currencyType;
         uint256 appraisalValue;
     }
+
     mapping(uint256 => vehicleData) public vehicleCollection;
+    mapping(uint256 => participant) public ParticipantCollection;
 
     function registerVehicle(
         address payable owner, 
@@ -22,16 +29,30 @@ contract VehicleBuySell is ERC721Full{
         string memory make,
         string memory model,
         uint year,
-        uint mileage,
+        string memory veh_color,
+        string memory veh_title,
+        string memory seller_name,
+        string memory buyer_name,
         string memory currencyType,
         uint256 appraisalValue
     ) payable public returns(uint256) {
         uint256 tokenId = totalSupply();
         _mint(owner, tokenId);
         _setTokenURI(tokenId, VIN); //used VIN number as TokenURI
-        vehicleCollection[tokenId] = vehicleData(make, model, year, mileage, currencyType, appraisalValue);
-        //_mint(owner, VIN);
-        //vehicleCollection[VIN] = vehicleData(make, model, year, mileage, currencyType, appraisalValue);
+        vehicleCollection[tokenId] = vehicleData(
+            make, 
+            model, 
+            year, 
+            veh_color, 
+            veh_title
+            );
+        ParticipantCollection[tokenId] = participant(
+            seller_name, 
+            buyer_name, 
+            currencyType, 
+            appraisalValue
+            );
         return tokenId;
     }
+
 }
